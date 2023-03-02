@@ -8,8 +8,9 @@
 int main()
 {
 	/* TODO: create main loop */
-	printf("sup dawg\n");
 	
+	printf("+-----------+\n|s0ckblaster|\n+---v0.0.1--+\n");
+
 	unsigned char data[9];
 
 	unsigned char packet[sizeof(struct iphdr) + sizeof(struct udphdr) + 9];
