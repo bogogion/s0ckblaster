@@ -15,6 +15,7 @@ uint8_t combine_into_byte(uint8_t x, uint8_t y, uint8_t first_shift)
 	return temp;
 }
 
+/* Combines flags and offset */
 uint16_t combine_into_flag_off(uint8_t x, uint16_t y)
 {
 	uint16_t temp;
@@ -23,23 +24,19 @@ uint16_t combine_into_flag_off(uint8_t x, uint16_t y)
 	return temp;
 }
 
+/* IPv4 Checksum */
 uint16_t calc_csum(uint16_t *ptr,int nbytes) 
 {
-	register long sum;
-	unsigned short oddbyte;
-	register short answer;
+	uint16_t answer;
+	answer = 0;
 
-	sum=0;
-	while(nbytes) {
-		sum += *ptr++;
-		nbytes-=2;
+	while(nbytes)
+	{
+		answer += *ptr++;
+		nbytes--;
 	}
 
-	sum = (sum>>16)+(sum & 0xffff);
-	sum = sum + (sum>>16);
-	answer=(short)~sum;
-	
-	return(answer);
+	return(~answer);
 }
 
 void create_iphdr_ipv4(struct iphdr *hdr, struct bit_hold bit_hold, uint16_t length, uint16_t ident, uint8_t ttl, uint8_t proto,
