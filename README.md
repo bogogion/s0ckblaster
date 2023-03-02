@@ -2,6 +2,7 @@
 Raw packet generator tool written in C.
 
 ## Planned Features:
+- Test functions with custom servers
 - IPv4 & IPv6 header creation
 - TCP, UDP, HTML, and more presets
 - Ethernet header creation
