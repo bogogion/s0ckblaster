@@ -39,21 +39,36 @@ uint16_t calc_csum(uint16_t *ptr,int nbytes)
 	return(~answer);
 }
 
-void create_iphdr_ipv4(struct iphdr *hdr, struct bit_hold bit_hold, uint16_t length, uint16_t ident, uint8_t ttl, uint8_t proto,
+void print_header(uint8_t *ptr,int nbytes)
+{
+	uint8_t hold;
+	hold = 0;
+
+	while(nbytes)
+	{
+		hold += *ptr++;
+		printf("0x%x ", hold);
+		nbytes--;
+	}	
+	printf("\n");
+}
+void create_iphdr_ipv4(struct s_iphdr4 *hdr, struct ip_bit_hold bit_hold, uint16_t length, uint16_t ident, uint8_t ttl, uint8_t proto,
 		       uint32_t source, uint32_t dest)
 {
 	/* Fill in values and properly format combined bytes */
-	hdr->version = bit_hold.ver;
-	hdr->ihl = bit_hold.len;
-	hdr->tot_len = length;
-	hdr->id = ident;
-	hdr->frag_off = combine_into_flag_off(bit_hold.flag, bit_hold.off);
-	hdr->protocol = proto;
+	hdr->ver_ihl = combine_into_byte(bit_hold.ver, bit_hold.ihl, 4);
+	hdr->dscp_ecn = combine_into_byte(bit_hold.dscp, bit_hold.ecn,6);
+	hdr->ident = ident;
+	hdr->len = length;
+	hdr->flag_off = combine_into_flag_off(bit_hold.flag, bit_hold.off);
+	hdr->ttl = ttl;
+	hdr->prot = proto;
 	hdr->check = 0;
-	hdr->saddr = source;
-	hdr->daddr = dest;
+	hdr->src = source;
+	hdr->dest = dest;
 
-	hdr->check = calc_csum((uint16_t *) hdr, (4 * hdr->ihl));
+	hdr->check = calc_csum((uint16_t *) hdr, (4 * bit_hold.ihl));
+	print_header((uint8_t *)hdr, (4 * bit_hold.ihl));
 }
 
 void create_udp_packet(struct udphdr *hdr, struct iphdr *ihdr, uint16_t sport, uint16_t dport, uint16_t len, int csum_bool)
