@@ -51,7 +51,7 @@ int main()
 
 	uint16_t length = 5*4 + 8 + 9;
 
-	create_iphdr_ipv4(&hdr,bhold,length,0,64,0x11,src,dest);
+	create_iphdr_ipv4(&hdr,bhold,length,0,64,17,src,dest);
 	create_udp_packet(&uhdr, NULL, 5805, 5805, 17, 0);
 
 	memcpy(ptr, &hdr, 5*4);

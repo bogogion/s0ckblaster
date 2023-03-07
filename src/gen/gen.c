@@ -58,8 +58,8 @@ void create_iphdr_ipv4(struct s_iphdr4 *hdr, struct ip_bit_hold bit_hold, uint16
 	/* Fill in values and properly format combined bytes */
 	hdr->ver_ihl = combine_into_byte(bit_hold.ver, bit_hold.ihl, 4);
 	hdr->dscp_ecn = combine_into_byte(bit_hold.dscp, bit_hold.ecn,6);
-	hdr->ident = ident;
-	hdr->len = length;
+	hdr->ident = ntohs(ident);
+	hdr->len = ntohs(length); /* network byte order*/
 	hdr->flag_off = combine_into_flag_off(bit_hold.flag, bit_hold.off);
 	hdr->ttl = ttl;
 	hdr->prot = proto;
